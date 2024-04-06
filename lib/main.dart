@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/data/services/notes_service.dart';
 import '/utils/dependency_injection.dart';
 import 'routes/app_router.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   setupLocators();
   runApp(const MainApp());
 }
@@ -13,8 +16,12 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appRouter = AppRouter();
-    return MaterialApp.router(
-      routerConfig: appRouter.config(),
+    return ChangeNotifierProvider(
+      create: (context) => locator<NotesService>(),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        routerConfig: appRouter.config(),
+      ),
     );
   }
 }

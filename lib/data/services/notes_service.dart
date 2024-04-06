@@ -18,24 +18,28 @@ class NotesService extends ChangeNotifier {
   List<Note> get notes => _notes;
 
   void _loadNotes() {
-    _notes =
-        _notesPref.getValue().map((e) => Note.fromJson(jsonDecode(e))).toList();
+    _notes = _notesPref
+        .getValue()
+        .map((note) => Note.fromJson(jsonDecode(note)))
+        .toList();
     _notesPref.listen((list) {
-      _notes = list.map((e) => Note.fromJson(jsonDecode(e))).toList();
-      notifyListeners();
+      _notes = list.map((note) => Note.fromJson(jsonDecode(note))).toList();
     });
+    notifyListeners();
   }
 
   void addNote(Note note) {
     _notes.add(note);
     _notesPref
         .setValue(_notes.map((note) => jsonEncode(note.toJson())).toList());
+    notifyListeners();
   }
 
   void removeNoteById(String id) {
     _notes.removeWhere((note) => note.id == id);
     _notesPref
         .setValue(_notes.map((note) => jsonEncode(note.toJson())).toList());
+    notifyListeners();
   }
 
   void updateNoteById(String id, Note note) {
@@ -43,5 +47,10 @@ class NotesService extends ChangeNotifier {
     _notes[index] = note;
     _notesPref
         .setValue(_notes.map((note) => jsonEncode(note.toJson())).toList());
+    notifyListeners();
+  }
+
+  Note getNoteById(String id) {
+    return _notes.firstWhere((note) => note.id == id);
   }
 }
