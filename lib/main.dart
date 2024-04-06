@@ -4,9 +4,9 @@ import '/data/services/notes_service.dart';
 import '/utils/dependency_injection.dart';
 import 'routes/app_router.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupLocators();
+  await setupLocators();
   runApp(const MainApp());
 }
 
